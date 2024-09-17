@@ -1,0 +1,15 @@
+{
+  "name": "Infinite Craft Mapper",
+  "action": {},
+  "manifest_version": 3,
+  "version": "0.1",
+  "description": "Maps the craftable items in Infinitecraft",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage"
+  ],
+  "background": {
+    "service_worker": "service-worker.js"
+  }
+}
