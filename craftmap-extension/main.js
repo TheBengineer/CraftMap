@@ -119,8 +119,12 @@ if (typeof elements === 'undefined') {
 if (typeof map === 'undefined') {
     map = loadMap();
 }
-if (typeof lastSaved === 'undefined') {
-    lastSaved = Date.now();
+if (typeof chartElement === 'undefined') {
+    chartElement = document.createElement("div");
+    chartElement.id = "infinite-craft-chart";
+    chartElement.innerHTML = "<h1>Elements</h1>";
+    let body = document.getElementsByClassName("sidebar-controls")[0];
+    body.insertBefore(chartElement, body.firstChild);
 }
 
 main();
