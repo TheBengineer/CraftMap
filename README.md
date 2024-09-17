@@ -6,7 +6,7 @@ CraftMap is a chrome extension to play the game [Infinite Craft](https://neal.fu
 
 * Download the repository
 * Extract the files
-* Open Chrome and go to `chrome://extensions/`
+* Open Chrome and go to [chrome://extensions/](chrome://extensions/)
 * Enable Developer Mode
 * Click on `Load Unpacked`
 * Select the `craftmap-extension` folder
