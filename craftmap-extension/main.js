@@ -4,6 +4,7 @@ function parsePairResult(first, second, result) {
     map[resultElementName] = {first: first, second: second};
     console.log(first.text + " + " + second.text + " => " + resultElementName);
     elements.push({text: resultElementName, emoji: data.emoji, discovered: data.isNew});
+    console.log("Elements:", elements.length);
 }
 
 function fetchCombination(a, b) {
@@ -34,19 +35,15 @@ function fetchCombination(a, b) {
 function fetchRandom() {
     let first = elements[Math.floor(Math.random() * elements.length)];
     let second = elements[Math.floor(Math.random() * elements.length)];
-    fetchCombination(first, second);
+    setTimeout(() => {
+        fetchCombination(first, second);
+        saveData();
+    }, Math.random() * 2000);
 }
 
 
 function main() {
-    fetchRandom()
-    saveData();
-    if (Date.now() - lastSaved > 10000) {
-        console.log("Saving data to local storage");
-        console.log("Elements:", elements);
-        saveData();
-        lastSaved = Date.now();
-    }
+    setInterval(fetchRandom, 1000);
 }
 
 function saveData() {
@@ -57,7 +54,14 @@ function saveData() {
     } else {
         localData = JSON.parse(localDataRaw);
     }
-    localData.elements.concat(elements.filter(e => !localData.elements.includes(e)));
+    let existingElements = localData.elements.map(e => e.text);
+    for (let e of elements) {
+        if (!existingElements.includes(e.text)) {
+            localData.elements.push(e);
+        }
+    }
+    console.log("Saving data to local storage:\n", localData);
+    localStorage['infinite-craft-data'] = JSON.stringify(localData);
     localStorage['infinite-craft-data-backup'] = JSON.stringify(localData);
 
     let localMapRaw = localStorage['infinite-craft-map'];
@@ -87,12 +91,24 @@ function loadMap() {
 
 function loadData() {
     let result = localStorage['infinite-craft-data'];
-    let result2 = localStorage['infinite-craft-data-custom'];
+    let resultBackup = localStorage['infinite-craft-data-backup'];
     if (result === undefined || result === null) {
         result = [];
     } else {
         result = JSON.parse(result).elements;
     }
+    if (resultBackup === undefined || resultBackup === null) {
+        resultBackup = [];
+    } else {
+        resultBackup = JSON.parse(resultBackup).elements;
+    }
+    let existingElements = result.map(e => e.text);
+    for (let e of resultBackup) {
+        if (!existingElements.includes(e.text)) {
+            result.push(e);
+        }
+    }
+    result.concat(resultBackup.filter(e => !result.includes(e)));
     console.log("Loading existing elements:\n", result);
     return result;
 }
