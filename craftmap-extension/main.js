@@ -127,4 +127,12 @@ if (typeof chartElement === 'undefined') {
     body.insertBefore(chartElement, body.firstChild);
 }
 
-main();
+let alreadyInjected;
+
+if (typeof alreadyInjected === 'undefined') {
+    alreadyInjected = true;
+    main();
+} else {
+    console.log("Already injected");
+}
+
